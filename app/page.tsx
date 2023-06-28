@@ -1,11 +1,10 @@
-import Tiptap from "@/components/editor";
+import Editor from "@/components/editor";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="">
-      <h1>Hello</h1>
-      <Tiptap />
+    <main className="flex items-center justify-center h-screen">
+      <Editor />
     </main>
   );
 }
