@@ -4,8 +4,9 @@ import Editor from "@/components/editor";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
-import { EyeIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { boolean } from "zod";
 
@@ -55,9 +56,11 @@ export default function Home() {
             <h1>Publish</h1>
             <Switch />
           </div>
-          <Button>
-            <EyeIcon className="mr-2 h-4 w-4" /> Preview
-          </Button>
+          <Link href="/preview">
+            <Button>
+              <EyeIcon className="mr-2 h-4 w-4" /> Preview
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
