@@ -16,3 +16,5 @@ export async function GET(request: NextApiRequest, { params }: any) {
 
   return NextResponse.json({ user });
 }
+
+// UPDATE USER DETAILS

@@ -25,9 +25,19 @@ export async function GET(request: NextApiRequest, { params }: any) {
     where: {
       authorId: user.id,
     },
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+      slug: true,
+      isDraft: true,
+    },
   });
 
-  return NextResponse.json({ user, blogs });
+  // FILTER draft and published blogs
+  const draftBlogs = blogs.filter((blog) => blog.isDraft);
+  const publishedBlogs = blogs.filter((blog) => !blog.isDraft);
+  return NextResponse.json({ user, draftBlogs, publishedBlogs });
 }
 
 // CREATE BLOG
