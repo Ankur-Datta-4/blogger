@@ -4,13 +4,36 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { TiptapExtensions } from "./extensions";
 import { TiptapEditorProps } from "./props";
 import { EditorBubbleMenu } from "./components";
+import useBlog from "@/lib/hooks/use-blog";
+import LoadingCircle from "../ui/loading-circle";
+import { useEffect } from "react";
 
-const Tiptap = () => {
+interface TipTapEditorProps {
+  selectedBlog: Blog | null;
+  userSlug: string;
+}
+
+const Tiptap = ({ selectedBlog, userSlug }: TipTapEditorProps) => {
+  const { blog, mutate, isError, isLoading } = useBlog(
+    userSlug,
+    selectedBlog?.slug
+  );
+
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
     autofocus: "end",
   });
+
+  useEffect(() => {
+    if (blog) {
+      console.log("Content updated");
+      editor?.commands.setContent(blog.jsonContent);
+    }
+  }, [blog]);
+
+  if (isLoading) return <LoadingCircle />;
+  if (isError) return <div>Something went wrong</div>;
 
   return (
     <div

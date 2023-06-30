@@ -8,16 +8,17 @@ import {
   AccordionTrigger,
 } from "./accordion";
 import BlogCardSm, { BlogCardSmProps } from "./blog-card-sm";
-import { Blog } from "@/app/page";
 
 interface SidebarProps {
   setSelectedBlog: any;
-  blogs: Blog[];
+  drafts: Blog[];
+  published: Blog[];
   selectedBlog: any;
 }
 export default function Sidebar({
   setSelectedBlog,
-  blogs,
+  drafts,
+  published,
   selectedBlog,
 }: SidebarProps) {
   return (
@@ -33,8 +34,14 @@ export default function Sidebar({
           <AccordionTrigger>Drafts</AccordionTrigger>
           <AccordionContent>
             <ul className="flex flex-col gap-2">
-              <li>Post 1</li>
-              <li>Post 2</li>
+              {drafts.map((blog: Blog) => (
+                <BlogCardSm
+                  key={blog.id}
+                  {...blog}
+                  setSelectedBlog={setSelectedBlog}
+                  selectedBlog={selectedBlog}
+                />
+              ))}
             </ul>
           </AccordionContent>
         </AccordionItem>
@@ -42,7 +49,7 @@ export default function Sidebar({
           <AccordionTrigger>Published</AccordionTrigger>
           <AccordionContent>
             <ul className="flex flex-col gap-2">
-              {blogs.map((blog: Blog) => (
+              {published.map((blog: Blog) => (
                 <BlogCardSm
                   key={blog.id}
                   {...blog}

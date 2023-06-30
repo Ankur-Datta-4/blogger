@@ -4,12 +4,16 @@ export interface BlogCardSmProps {
   createdAt: string;
   selectedBlog: any;
   setSelectedBlog: any;
+  slug: string;
+  isDraft: boolean;
 }
 
 export default function BlogCardSm({
+  slug,
   id,
   title,
   createdAt,
+  isDraft,
   setSelectedBlog,
   selectedBlog,
 }: BlogCardSmProps) {
@@ -24,7 +28,7 @@ export default function BlogCardSm({
       className={`${
         id === selectedBlog?.id ? "border-l-2 border-l-black" : ""
       } p-2 cursor-pointer`}
-      onClick={() => setSelectedBlog({ id, title, createdAt })}
+      onClick={() => setSelectedBlog({ slug, title, createdAt, id, isDraft })}
     >
       <div className="flex flex-col gap-2">
         <h1 className="text-lg font-semibold">{title}</h1>
