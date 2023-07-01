@@ -30,18 +30,26 @@ export default function Dashboard({ params }: any) {
       .then((data) => {
         console.log(data);
         mutate();
+      })
+      .catch((err) => {
+        toast({ title: "Something went wrong", variant: "destructive" });
       });
     if (selectedBlog) {
       const { id, slug, isDraft, title, createdAt } = selectedBlog;
       setSelectedBlog({ id, slug, isDraft: !isDraft, title, createdAt });
     }
     if (newCheckedValue) {
-      toast({ description: "Blog published" });
+      toast({ title: "Blog published" });
     } else {
-      toast({ description: "Blog pushed to drafts" });
+      toast({ title: "Blog pushed to drafts" });
     }
   };
-  if (isLoading) return <LoadingCircle />;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center w-full h-screen">
+        <LoadingCircle />
+      </div>
+    );
   if (isError) return <div>Something went wrong</div>;
   return (
     <div className="relative">
@@ -68,11 +76,14 @@ export default function Dashboard({ params }: any) {
                 onCheckedChange={handlePublish}
               />
             </div>
-            <Link href={`/${params.userSlug}/${selectedBlog?.slug}`}>
+            <a
+              href={`/${params.userSlug}/${selectedBlog?.slug}`}
+              target="_blank"
+            >
               <Button>
                 <EyeIcon className="mr-2 h-4 w-4" /> Preview
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       )}

@@ -23,7 +23,12 @@ export default function BlogPage({ params }: any) {
     }
   }, [blog]);
 
-  if (isLoading) return <LoadingCircle />;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center w-full h-screen">
+        <LoadingCircle />
+      </div>
+    );
   if (isError) return <div>Something went wrong</div>;
   return (
     <div className="flex items-center justify-center h-screen p-12">
