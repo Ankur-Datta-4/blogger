@@ -1,4 +1,4 @@
-import { DeleteIcon, TrashIcon } from "lucide-react";
+import { DeleteIcon, Edit, Save, TrashIcon } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,6 +11,8 @@ import {
   AlertDialogTrigger,
 } from "./alert-dialog";
 import { toast } from "./use-toast";
+import { useState } from "react";
+import { Input } from "./input";
 
 export interface BlogCardSmProps {
   id: string;
@@ -41,6 +43,25 @@ export default function BlogCardSm({
     day: "numeric",
     year: "numeric",
   });
+  const [newTitle, setNewTitle] = useState(title);
+  const [edit, setEdit] = useState(false);
+
+  const handleSaveTitle = () => {
+    setEdit(false);
+    fetch(`/api/user/${userSlug}/blog/${slug}`, {
+      method: "PUT",
+      body: JSON.stringify({ title: newTitle }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        mutateBlogs();
+        toast({ title: `${title} saved` });
+        setSelectedBlog(null);
+      })
+      .catch((err) => {
+        toast({ title: "Something went wrong", variant: "destructive" });
+      });
+  };
 
   const handleDeleteBlog = () => {
     toast({ title: `Deleting blog` });
@@ -65,32 +86,51 @@ export default function BlogCardSm({
       onClick={() => setSelectedBlog({ slug, title, createdAt, id, isDraft })}
     >
       <div className="flex flex-col gap-2">
-        <h1 className="text-lg font-semibold">{title}</h1>
+        {edit ? (
+          <div className="flex items-center gap-2">
+            <Input
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />{" "}
+            <Save onClick={handleSaveTitle} className="ml-2" />{" "}
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-semibold">{newTitle}</h1>
+            <Edit
+              onClick={() => setEdit(true)}
+              className="h-4 w-4 text-gray-400"
+            />{" "}
+          </div>
+        )}
+
         <p className="text-sm text-gray-500">{createdAtData}</p>
       </div>
-      <div className="text-gray-300 hover:text-black ">
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <TrashIcon />
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                Are you sure you want to delete?
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteBlog}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+      {!edit && (
+        <div className="text-gray-300 hover:text-black ">
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <TrashIcon />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to delete?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeleteBlog}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      )}
     </div>
   );
 }
