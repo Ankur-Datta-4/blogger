@@ -8,10 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import useBlogs from "@/lib/hooks/use-blogs";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
-import { boolean } from "zod";
+import { Savebutton } from "./Savebutton";
 
 export default function Dashboard({ params }: any) {
   const [isPublished, setIsPublished] = useState<boolean>(false);
@@ -19,6 +17,8 @@ export default function Dashboard({ params }: any) {
     params.userSlug
   );
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [saved, setSaved] = useState<boolean>(true);
+  const [edited, setEdited] = useState<boolean>(false);
   const { toast } = useToast();
 
   const handlePublish = (newCheckedValue: Boolean) => {
@@ -28,7 +28,6 @@ export default function Dashboard({ params }: any) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         mutate();
       })
       .catch((err) => {
@@ -44,6 +43,7 @@ export default function Dashboard({ params }: any) {
       toast({ title: "Blog pushed to drafts" });
     }
   };
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center w-full h-screen">
@@ -61,14 +61,21 @@ export default function Dashboard({ params }: any) {
       />
       <main className="flex items-center justify-center h-screen">
         {selectedBlog ? (
-          <Editor selectedBlog={selectedBlog} userSlug={params.userSlug} />
+          <Editor
+            selectedBlog={selectedBlog}
+            userSlug={params.userSlug}
+            saved={saved}
+            setSaved={setSaved}
+            setEdited={setEdited}
+          />
         ) : (
           <h2>Hey there!</h2>
         )}
       </main>
       {selectedBlog && (
-        <div className="absolute top-0 right-0 p-4">
+        <div className="fixed top-0 right-0 p-4">
           <div className="flex gap-4 items-center">
+            {edited && <Savebutton saved={saved} />}
             <div className="flex gap-2">
               <h1>Publish</h1>
               <Switch
