@@ -59,7 +59,7 @@ export default function Dashboard({ params }: any) {
         published={published}
         selectedBlog={selectedBlog}
       />
-      <main className="flex items-center justify-center h-screen">
+      <main className="flex items-center justify-center min-h-screen">
         {selectedBlog ? (
           <Editor
             selectedBlog={selectedBlog}
