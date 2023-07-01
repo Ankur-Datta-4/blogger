@@ -3,7 +3,7 @@
 import Editor from "@/components/editor";
 import { Button } from "@/components/ui/button";
 import LoadingCircle from "@/components/ui/loading-circle";
-import Sidebar from "@/components/ui/sidebar";
+import Sidebar from "@/app/[userSlug]/dash/sidebar";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import useBlogs from "@/lib/hooks/use-blogs";
@@ -58,6 +58,8 @@ export default function Dashboard({ params }: any) {
         drafts={drafts}
         published={published}
         selectedBlog={selectedBlog}
+        userSlug={params.userSlug}
+        mutateBlogs={mutate}
       />
       <main className="flex items-center justify-center min-h-screen">
         {selectedBlog ? (

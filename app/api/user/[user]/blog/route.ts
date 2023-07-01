@@ -43,8 +43,6 @@ export async function GET(request: NextApiRequest, { params }: any) {
 // CREATE BLOG
 export async function POST(request: Request, { params }: any) {
   const { user: userslug } = params;
-  const data = await request.json();
-  console.log(data);
   const user = await prisma.user.findUnique({
     where: {
       slug: userslug as string,
