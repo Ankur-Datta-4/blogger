@@ -17,7 +17,7 @@ model Blog {
   title       String
   description String
   jsonContent Json
-  htmlContent String
+  htmlContent String   @db.Text()
   createdAt   DateTime @default(now())
   isDraft     Boolean  @default(true)
   author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
