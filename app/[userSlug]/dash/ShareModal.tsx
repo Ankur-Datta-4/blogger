@@ -11,8 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
+import { debounce } from "lodash";
 import { ShareIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface shareModalProps {
   blogSlug: string;
@@ -24,7 +25,6 @@ export function ShareModal({ blogSlug, userSlug }: shareModalProps) {
   const checkSlugAvailability = (ip: string) => {
     fetch(`/api/user/${userSlug}/blog/${ip}`)
       .then((res) => {
-        console.log(res.status === 404);
         if (res.status === 404) {
           setAlertStatus(false);
         } else {
@@ -38,6 +38,11 @@ export function ShareModal({ blogSlug, userSlug }: shareModalProps) {
 
   const handleUpdateSlug = () => {
     if (blogSlug !== newSlug) {
+      if (alertStatus) {
+        toast({ title: "Slug already exists", variant: "destructive" });
+        return;
+      }
+      setAlertStatus(false);
       fetch(`/api/user/${userSlug}/blog/${blogSlug}`, {
         method: "PUT",
         body: JSON.stringify({ slug: newSlug }),
@@ -51,6 +56,16 @@ export function ShareModal({ blogSlug, userSlug }: shareModalProps) {
         });
     }
   };
+
+  const debouncedSlugSearch = useRef(
+    debounce(checkSlugAvailability, 500)
+  ).current;
+
+  useEffect(() => {
+    return () => {
+      debouncedSlugSearch.cancel();
+    };
+  }, [debouncedSlugSearch]);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -77,11 +92,11 @@ export function ShareModal({ blogSlug, userSlug }: shareModalProps) {
               onChange={(e) => {
                 setAlertStatus(false);
                 setNewSlug(e.target.value);
-                checkSlugAvailability(e.target.value);
+                debouncedSlugSearch(e.target.value);
               }}
             />
           </div>
-          {alertStatus ? (
+          {alertStatus && newSlug !== blogSlug ? (
             <p className="text-red-500 text-sm ml-12">Slug already taken</p>
           ) : null}
         </div>
