@@ -56,7 +56,7 @@ export async function PUT(request: Request, { params }: any) {
     },
   });
 
-  if (!blog || blog.isDraft) {
+  if (!blog) {
     return NextResponse.json({ message: "Blog not found" }, { status: 404 });
   }
 
