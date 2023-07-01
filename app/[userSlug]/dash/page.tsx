@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import useBlogs from "@/lib/hooks/use-blogs";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Savebutton } from "./Savebutton";
 
 export default function Dashboard({ params }: any) {
@@ -20,6 +20,11 @@ export default function Dashboard({ params }: any) {
   const [saved, setSaved] = useState<boolean>(true);
   const [edited, setEdited] = useState<boolean>(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setSaved(true);
+    setEdited(false);
+  }, [selectedBlog]);
 
   const handlePublish = (newCheckedValue: Boolean) => {
     fetch(`/api/user/${params.userSlug}/blog/${selectedBlog?.slug}`, {
