@@ -1,13 +1,12 @@
 import fetcher from "../fetcher";
 import useSWR from "swr";
 
-function useBlog(userSlug: string, blogSlug: string | undefined) {
+function useUser(userSlug: string) {
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/user/${userSlug}/blog/${blogSlug}`,
+    `/api/user/${userSlug}`,
     fetcher
   );
   return {
-    blog: data?.blog ?? null,
     user: data?.user ?? null,
     isLoading: isLoading,
     isError: error,
@@ -15,4 +14,4 @@ function useBlog(userSlug: string, blogSlug: string | undefined) {
   };
 }
 
-export default useBlog;
+export default useUser;
