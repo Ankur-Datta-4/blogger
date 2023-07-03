@@ -1,8 +1,18 @@
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { cn } from "@/lib/utils";
+import AuthProvider from "@/components/AuthProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+const fontHeading = localFont({
+  src: "../fonts/CalSans-SemiBold.woff2",
+  variable: "--font-heading",
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -16,7 +26,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable,
+          fontHeading.variable
+        )}
+      >
+        <AuthProvider>{children}</AuthProvider>
+      </body>
       <Toaster />
     </html>
   );

@@ -15,7 +15,7 @@ export async function GET(request: NextApiRequest, { params }: any) {
       id: true,
       name: true,
       slug: true,
-      photoURL: true,
+      image: true,
     },
   });
   if (!user) {
@@ -51,7 +51,7 @@ export async function POST(request: Request, { params }: any) {
       id: true,
       name: true,
       slug: true,
-      photoURL: true,
+      image: true,
     },
   });
   if (!user) {

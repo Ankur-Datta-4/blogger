@@ -1,4 +1,4 @@
-import { SearchIcon } from "lucide-react";
+import { GripVertical, SearchIcon } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import {
@@ -11,6 +11,15 @@ import BlogCardSm, {
   BlogCardSmProps,
 } from "../../../components/ui/blog-card-sm";
 import { toast } from "@/components/ui/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   setSelectedBlog: any;
@@ -28,6 +37,7 @@ export default function Sidebar({
   userSlug,
   mutateBlogs,
 }: SidebarProps) {
+  const session = useSession();
   const handleCreateNewBlog = () => {
     toast({ title: "Creating blog" });
     fetch(`/api/user/${userSlug}/blog`, {
@@ -92,6 +102,40 @@ export default function Sidebar({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      <div className="relative">
+        <div className="absolute left-0 top-[65vh] w-full flex items-center gap-4 p-2">
+          <Avatar>
+            <AvatarImage src={session.data?.user.image as string} />
+            <AvatarFallback>
+              {session.data?.user.name
+                ?.split(" ")
+                .map((name) => name[0])
+                .join("")
+                .toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <p>{session.data?.user.name?.split(" ")[0]}</p>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+                <GripVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  signOut({
+                    callbackUrl: "/",
+                  });
+                }}
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
     </nav>
   );
 }
