@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { signIn } from "next-auth/react";
 
 export function LoginCard() {
   return (
@@ -18,7 +20,11 @@ export function LoginCard() {
         <CardDescription>Sign-in to use the app</CardDescription>
       </CardHeader>
       <CardContent className="">
-        <Button>
+        <Button
+          onClick={() => {
+            signIn("google");
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -51,7 +57,7 @@ export function LoginCard() {
               d="M48 48L17 24l-4-3 35-10z"
             />
           </svg>
-          <span>Sign in with Google</span>
+          <span>Continue with Google</span>
         </Button>
       </CardContent>
     </Card>

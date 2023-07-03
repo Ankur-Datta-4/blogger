@@ -1,10 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
-
+import { getServerSession } from "next-auth/next";
+import { authConfig } from "@/lib/auth";
 // GET BLOG DETAILS
 export async function GET(request: NextApiRequest, { params }: any) {
   const { user: userslug, blogslug } = params;
+
+  const session = await getServerSession(authConfig);
+  console.log(`sess: ${session}`);
   const user = await prisma.user.findUnique({
     where: {
       slug: userslug as string,
@@ -13,7 +17,7 @@ export async function GET(request: NextApiRequest, { params }: any) {
       id: true,
       name: true,
       slug: true,
-      photoURL: true,
+      image: true,
     },
   });
   if (!user) {
@@ -25,7 +29,7 @@ export async function GET(request: NextApiRequest, { params }: any) {
     },
   });
   // based on user-auth raise error status for draft blogs
-  if (!blog) {
+  if (!blog || (blog.isDraft && session?.user.id !== blog.authorId)) {
     return NextResponse.json({ message: "Blog not found" }, { status: 404 });
   }
 
@@ -44,7 +48,7 @@ export async function PUT(request: Request, { params }: any) {
       id: true,
       name: true,
       slug: true,
-      photoURL: true,
+      image: true,
     },
   });
   if (!user) {
@@ -88,7 +92,7 @@ export async function DELETE(request: Request, { params }: any) {
       id: true,
       name: true,
       slug: true,
-      photoURL: true,
+      image: true,
     },
   });
   if (!user) {

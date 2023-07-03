@@ -3,7 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { cn } from "@/lib/utils";
-import { MainNav } from "@/components/ui/navbar";
+import AuthProvider from "@/components/AuthProvider";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -33,7 +33,7 @@ export default function RootLayout({
           fontHeading.variable
         )}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
       <Toaster />
     </html>

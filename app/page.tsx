@@ -2,6 +2,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { getSession, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { authConfig } from "@/lib/auth";
 
 export default async function IndexPage() {
   return (
