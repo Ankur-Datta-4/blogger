@@ -8,6 +8,7 @@ function useBlog(userSlug: string, blogSlug: string | undefined) {
   );
   return {
     blog: data?.blog ?? null,
+    user: data?.user ?? null,
     isLoading: isLoading,
     isError: error,
     mutate,
