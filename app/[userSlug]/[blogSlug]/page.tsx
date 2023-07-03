@@ -1,6 +1,7 @@
 "use client";
 
 import { TiptapExtensions } from "@/components/editor/extensions";
+import ErrorPage from "@/components/errorHandlers";
 import LoadingCircle from "@/components/ui/loading-circle";
 import { useJsonContent } from "@/lib/hooks/save-content";
 import useBlog from "@/lib/hooks/use-blog";
@@ -29,7 +30,9 @@ export default function BlogPage({ params }: any) {
         <LoadingCircle />
       </div>
     );
-  if (isError) return <div>Something went wrong</div>;
+  if (isError) {
+    return <ErrorPage error={isError} />;
+  }
   return (
     <div className="flex items-center justify-center min-h-screen p-12">
       <div className="relative min-h-full w-full border-stone-200 p-12 px-8 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg max-w-7xl overflow-x-hidden ">

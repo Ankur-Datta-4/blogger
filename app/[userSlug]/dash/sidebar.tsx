@@ -70,7 +70,7 @@ export default function Sidebar({
         <AccordionItem value="drafts">
           <AccordionTrigger>Drafts</AccordionTrigger>
           <AccordionContent>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-2 max-h-[500px]">
               {drafts.map((blog: Blog) => (
                 <BlogCardSm
                   key={blog.id}
@@ -103,7 +103,7 @@ export default function Sidebar({
         </AccordionItem>
       </Accordion>
       <div className="relative">
-        <div className="absolute left-0 top-[65vh] w-full flex items-center gap-4 p-2">
+        <div className="w-full flex items-center gap-4 p-2">
           <Avatar>
             <AvatarImage src={session.data?.user.image as string} />
             <AvatarFallback>

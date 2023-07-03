@@ -6,7 +6,6 @@ function useBlogs(userSlug: string) {
     `/api/user/${userSlug}/blog`,
     fetcher
   );
-  console.log(data);
   return {
     drafts: data?.draftBlogs ?? [],
     published: data?.publishedBlogs ?? [],

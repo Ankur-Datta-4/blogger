@@ -7,6 +7,7 @@ import { EditorBubbleMenu } from "./components";
 import useBlog from "@/lib/hooks/use-blog";
 import LoadingCircle from "../ui/loading-circle";
 import { useCallback, useEffect } from "react";
+import ErrorPage from "../errorHandlers";
 
 interface TipTapEditorProps {
   selectedBlog: Blog | null;
@@ -75,7 +76,9 @@ const Tiptap = ({
   }, [saveContent]);
 
   if (isLoading) return <LoadingCircle />;
-  if (isError) return <div>Something went wrong</div>;
+  if (isError) {
+    return <ErrorPage error={isError} />;
+  }
 
   return (
     <div

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Savebutton } from "./Savebutton";
 import { ShareModal } from "./ShareModal";
 import { Confetti } from "@/components/ui/confetti";
+import ErrorPage from "@/components/errorHandlers";
 
 export default function Dashboard({ params }: any) {
   const { drafts, published, isLoading, isError, mutate } = useBlogs(
@@ -60,7 +61,10 @@ export default function Dashboard({ params }: any) {
         <LoadingCircle />
       </div>
     );
-  if (isError) return <div>Something went wrong</div>;
+  if (isError) {
+    return <ErrorPage error={isError} />;
+  }
+
   return (
     <div className="relative">
       <Sidebar
