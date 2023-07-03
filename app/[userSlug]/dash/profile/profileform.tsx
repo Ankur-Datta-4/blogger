@@ -115,7 +115,7 @@ export default function ProfileForm({ user, mutateUser }: any) {
               </FormControl>
               <FormDescription>
                 Your blogs would be accessible at{" "}
-                <b>{`notionblogger.gg/${field.value}`}</b>
+                <b>{`${window.location.host}/${field.value}`}</b>
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -96,7 +96,9 @@ export default function BlogCardSm({
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold">{newTitle}</h1>
+            <h1 className="text-lg font-semibold">
+              {newTitle.length > 15 ? `${newTitle.slice(0, 15)}...` : newTitle}
+            </h1>
             <Edit
               onClick={() => setEdit(true)}
               className="h-4 w-4 text-gray-400"

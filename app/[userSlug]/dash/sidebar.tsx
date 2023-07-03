@@ -57,7 +57,7 @@ export default function Sidebar({
       });
   };
   return (
-    <nav className="fixed left-0 top-0 gap-4 max-w-96 p-4">
+    <nav className="fixed left-0 top-0 gap-4 max-w-96 p-4 hidden sm:block">
       <div className="flex gap-2">
         <Input placeholder="Search" />
         <Button>

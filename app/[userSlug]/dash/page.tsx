@@ -86,7 +86,7 @@ export default function Dashboard({ params }: any) {
             setEdited={setEdited}
           />
         ) : (
-          <h2>Hey there!</h2>
+          <h2 className="text-2xl">Hey there!</h2>
         )}
       </main>
       {selectedBlog && (
@@ -100,10 +100,12 @@ export default function Dashboard({ params }: any) {
                 onCheckedChange={handlePublish}
               />
             </div>
-            <ShareModal
-              userSlug={params.userSlug}
-              blogSlug={selectedBlog?.slug}
-            />
+            {!selectedBlog?.isDraft && (
+              <ShareModal
+                userSlug={params.userSlug}
+                blogSlug={selectedBlog?.slug}
+              />
+            )}
             <a
               href={`/${params.userSlug}/${selectedBlog?.slug}`}
               target="_blank"

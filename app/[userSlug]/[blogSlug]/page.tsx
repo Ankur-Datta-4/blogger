@@ -85,7 +85,9 @@ export default function BlogPage({ params }: any) {
             ref={divRef}
           ></div>
         )}
-        {activeTab === "articles" && <ArticleList blogs={published} />}
+        {activeTab === "articles" && (
+          <ArticleList blogs={published} userSlug={params.userSlug} />
+        )}
 
         {activeTab === "about" && <PublicProfile userSlug={params.userSlug} />}
 
