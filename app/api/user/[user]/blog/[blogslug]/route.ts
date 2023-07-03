@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authConfig } from "@/lib/auth";
 // GET BLOG DETAILS
-export async function GET(request: NextApiRequest, { params }: any) {
+export async function GET(request: Request, { params }: any) {
   const { user: userslug, blogslug } = params;
 
   const session = await getServerSession(authConfig);

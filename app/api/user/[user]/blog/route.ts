@@ -5,7 +5,7 @@ import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
 // GET ALL BLOGS
-export async function GET(request: NextApiRequest, { params }: any) {
+export async function GET(request: Request, { params }: any) {
   const { user: userslug } = params;
   const user = await prisma.user.findUnique({
     where: {
