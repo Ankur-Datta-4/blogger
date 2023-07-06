@@ -3,20 +3,19 @@
 import { TiptapExtensions } from "@/components/editor/extensions";
 import ErrorPage from "@/components/errorHandlers";
 import LoadingCircle from "@/components/ui/loading-circle";
-import { useJsonContent } from "@/lib/hooks/save-content";
 import useBlog from "@/lib/hooks/use-blog";
 import useBlogs from "@/lib/hooks/use-blogs";
-import { generateHTML } from "@tiptap/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ArticleList from "./articleList";
 import PublicProfile from "./about";
 import { ChevronLeftIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { EditorContent, useEditor } from "@tiptap/react";
+import { TipTapNonEditorProps } from "@/components/editor/props";
 
 type TabType = "articles" | "about" | "blog";
 export default function BlogPage({ params }: any) {
-  const divRef = useRef<HTMLDivElement>(null);
   const { blog, isLoading, isError, user } = useBlog(
     params.userSlug,
     params.blogSlug
@@ -28,14 +27,18 @@ export default function BlogPage({ params }: any) {
     isLoading: isLoadingx,
     isError: isErrorx,
   } = useBlogs(params.userSlug);
+
+  const editor = useEditor({
+    extensions: TiptapExtensions,
+    editorProps: TipTapNonEditorProps,
+    editable: false,
+  });
+
   useEffect(() => {
-    if (blog && divRef.current) {
-      divRef.current.innerHTML = generateHTML(
-        blog.jsonContent,
-        TiptapExtensions
-      );
+    if (blog) {
+      editor?.commands.setContent(blog.jsonContent);
     }
-  }, [blog, divRef.current]);
+  }, [blog]);
 
   if (isLoading || isLoadingx)
     return (
@@ -78,13 +81,8 @@ export default function BlogPage({ params }: any) {
           </p>
         )}
       </div>
-      <div className="relative min-h-full w-full border-stone-200 p-12 px-8 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg max-w-7xl overflow-x-hidden ">
-        {activeTab === "blog" && (
-          <div
-            className="ProseMirror prose-lg prose-headings:font-display focus:outline-none flex-wrap"
-            ref={divRef}
-          ></div>
-        )}
+      <div className="relative min-h-full w-full max-w-screen-lg border-stone-200 sm:rounded-lg sm:border sm:shadow-lg ">
+        {activeTab === "blog" && <EditorContent editor={editor} />}
         {activeTab === "articles" && (
           <ArticleList blogs={published} userSlug={params.userSlug} />
         )}

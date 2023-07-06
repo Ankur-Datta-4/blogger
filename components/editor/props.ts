@@ -42,3 +42,9 @@ export const TiptapEditorProps: EditorProps = {
     return false;
   },
 };
+
+export const TipTapNonEditorProps: EditorProps = {
+  attributes: {
+    class: "prose-lg prose-headings:font-display focus:outline-none",
+  },
+};
