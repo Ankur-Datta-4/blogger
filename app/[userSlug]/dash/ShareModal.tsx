@@ -102,7 +102,7 @@ export function ShareModal({ blogSlug, userSlug }: shareModalProps) {
         </div>
 
         <div className="relative mt-3 w-full rounded-lg border border-slate-300 bg-slate-50 p-3 text-center text-slate-800">
-          <p>{`${window.location.protocol}://${window.location.host}/${userSlug}/${newSlug}`}</p>
+          <p>{`${window.location.protocol}//${window.location.host}/${userSlug}/${newSlug}`}</p>
         </div>
 
         <DialogFooter>
@@ -110,7 +110,7 @@ export function ShareModal({ blogSlug, userSlug }: shareModalProps) {
             variant={"secondary"}
             onClick={() => {
               navigator.clipboard.writeText(
-                `${window.location.protocol}://${window.location.host}/${userSlug}/${newSlug}`
+                `${window.location.protocol}//${window.location.host}/${userSlug}/${newSlug}`
               );
               toast({ title: "Copied to clipboard" });
             }}
