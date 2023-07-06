@@ -1,4 +1,6 @@
-import { GripVertical, SearchIcon } from "lucide-react";
+"use client";
+
+import { AlignJustifyIcon, GripVertical, SearchIcon, X } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import {
@@ -21,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useState } from "react";
 
 interface SidebarProps {
   setSelectedBlog: any;
@@ -39,6 +42,7 @@ export default function Sidebar({
   mutateBlogs,
 }: SidebarProps) {
   const session = useSession();
+  const [openStatus, setOpenStatus] = useState(false);
   const handleCreateNewBlog = () => {
     toast({ title: "Creating blog" });
     fetch(`/api/user/${userSlug}/blog`, {
@@ -57,88 +61,108 @@ export default function Sidebar({
       });
   };
   return (
-    <nav className="fixed left-0 top-0 gap-4 max-w-96 p-4 hidden sm:block">
-      <div className="flex gap-2">
-        <Input placeholder="Search" />
-        <Button>
-          <SearchIcon />
-        </Button>
-      </div>
-      <Button className="my-4 w-full" onClick={handleCreateNewBlog}>
-        + Blog
-      </Button>
-      <Accordion collapsible type="single">
-        <AccordionItem value="drafts">
-          <AccordionTrigger>Drafts</AccordionTrigger>
-          <AccordionContent>
-            <ul className="flex flex-col gap-2 max-h-[500px]">
-              {drafts.map((blog: Blog) => (
-                <BlogCardSm
-                  key={blog.id}
-                  {...blog}
-                  setSelectedBlog={setSelectedBlog}
-                  selectedBlog={selectedBlog}
-                  mutateBlogs={mutateBlogs}
-                  userSlug={userSlug}
-                />
-              ))}
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="published">
-          <AccordionTrigger>Published</AccordionTrigger>
-          <AccordionContent>
-            <ul className="flex flex-col gap-2">
-              {published.map((blog: Blog) => (
-                <BlogCardSm
-                  key={blog.id}
-                  {...blog}
-                  setSelectedBlog={setSelectedBlog}
-                  selectedBlog={selectedBlog}
-                  mutateBlogs={mutateBlogs}
-                  userSlug={userSlug}
-                />
-              ))}
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-      <div className="relative">
-        <div className="w-full flex items-center gap-4 p-2">
-          <Avatar>
-            <AvatarImage src={session.data?.user.image as string} />
-            <AvatarFallback>
-              {session.data?.user.name
-                ?.split(" ")
-                .map((name) => name[0])
-                .join("")
-                .toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <p>{session.data?.user.name?.split(" ")[0]}</p>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
-                <GripVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <Link href={`/${userSlug}/dash/profile`}>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-              </Link>
-              <DropdownMenuItem
-                onClick={() => {
-                  signOut({
-                    callbackUrl: "/",
-                  });
-                }}
-              >
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+    <>
+      <nav
+        className={`fixed left-0 ${
+          openStatus ? "top-12" : "top-0"
+        } gap-4 max-w-96 p-4 ${
+          openStatus ? "h-screen w-full bg-slate-50" : "hidden"
+        } sm:block z-10 `}
+      >
+        <div className="flex gap-2">
+          <Input placeholder="Search" />
+          <Button>
+            <SearchIcon />
+          </Button>
         </div>
-      </div>
-    </nav>
+        <Button className="my-4 w-full" onClick={handleCreateNewBlog}>
+          + Blog
+        </Button>
+        <Accordion collapsible type="single">
+          <AccordionItem value="drafts">
+            <AccordionTrigger>Drafts</AccordionTrigger>
+            <AccordionContent>
+              <ul className="flex flex-col gap-2 max-h-[500px]">
+                {drafts.map((blog: Blog) => (
+                  <BlogCardSm
+                    key={blog.id}
+                    {...blog}
+                    setSelectedBlog={setSelectedBlog}
+                    selectedBlog={selectedBlog}
+                    mutateBlogs={mutateBlogs}
+                    userSlug={userSlug}
+                  />
+                ))}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="published">
+            <AccordionTrigger>Published</AccordionTrigger>
+            <AccordionContent>
+              <ul className="flex flex-col gap-2">
+                {published.map((blog: Blog) => (
+                  <BlogCardSm
+                    key={blog.id}
+                    {...blog}
+                    setSelectedBlog={setSelectedBlog}
+                    selectedBlog={selectedBlog}
+                    mutateBlogs={mutateBlogs}
+                    userSlug={userSlug}
+                  />
+                ))}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <div className="relative">
+          <div className="w-full flex items-center gap-4 p-2">
+            <Avatar>
+              <AvatarImage src={session.data?.user.image as string} />
+              <AvatarFallback>
+                {session.data?.user.name
+                  ?.split(" ")
+                  .map((name) => name[0])
+                  .join("")
+                  .toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <p>{session.data?.user.name?.split(" ")[0]}</p>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+                  <GripVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <Link href={`/${userSlug}/dash/profile`}>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem
+                  onClick={() => {
+                    signOut({
+                      callbackUrl: "/",
+                    });
+                  }}
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </nav>
+      <button
+        className="fixed left-0 top-0 p-6 block sm:hidden z-10"
+        onClick={() => {
+          setOpenStatus(!openStatus);
+        }}
+      >
+        {openStatus ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <AlignJustifyIcon className="h-6 w-6" />
+        )}
+      </button>
+    </>
   );
 }

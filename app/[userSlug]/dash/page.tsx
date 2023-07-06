@@ -76,7 +76,7 @@ export default function Dashboard({ params }: any) {
         mutateBlogs={mutate}
       />
 
-      <main className="flex items-center justify-center min-h-screen">
+      <main className="flex items-center justify-center min-h-screen mt-8 z-0">
         {selectedBlog ? (
           <Editor
             selectedBlog={selectedBlog}
@@ -90,7 +90,7 @@ export default function Dashboard({ params }: any) {
         )}
       </main>
       {selectedBlog && (
-        <div className="fixed top-0 right-0 p-4">
+        <div className="fixed top-0 right-0 p-4 z-10">
           <div className="flex gap-4 items-center">
             {edited && <Savebutton saved={saved} />}
             <div className="flex gap-2">
