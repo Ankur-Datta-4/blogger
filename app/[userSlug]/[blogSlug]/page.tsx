@@ -81,7 +81,7 @@ export default function BlogPage({ params }: any) {
           </p>
         )}
       </div>
-      <div className="relative min-h-full w-full max-w-screen-lg border-stone-200 sm:rounded-lg sm:border sm:shadow-lg ">
+      <div className="relative min-h-full w-full max-w-screen-lg border-stone-200 sm:rounded-lg sm:border sm:shadow-lg md:p-12">
         {activeTab === "blog" && <EditorContent editor={editor} />}
         {activeTab === "articles" && (
           <ArticleList blogs={published} userSlug={params.userSlug} />
