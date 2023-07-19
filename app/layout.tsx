@@ -29,8 +29,8 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-          fontHeading.variable
+          fontSans.className,
+          fontHeading.className
         )}
       >
         <AuthProvider>{children}</AuthProvider>
